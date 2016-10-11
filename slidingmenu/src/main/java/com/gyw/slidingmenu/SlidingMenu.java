@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
@@ -31,6 +32,8 @@ public class SlidingMenu extends ViewGroup {
 
     private Scroller mScroller;
 
+    private int touchSlop;
+
     public SlidingMenu(Context context) {
         this(context, null);
     }
@@ -48,6 +51,8 @@ public class SlidingMenu extends ViewGroup {
 
     private void init(Context context) {
         mScroller = new Scroller(context);
+
+        touchSlop = ViewConfiguration.get(context).getTouchSlop();
     }
 
 
@@ -191,6 +196,41 @@ public class SlidingMenu extends ViewGroup {
         }
     }
 
+
+    /**
+     * 处理菜单中的scrollview 和 菜单滑动的处理
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        // 只有横着滑动的时候, 拦截, return true
+        switch (ev.getAction()) {
+
+            case MotionEvent.ACTION_DOWN:
+
+                downX = (int) ev.getX();
+
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+
+                int moveX = (int) ev.getX();
+
+                //x差值
+                int deltaX = Math.abs(downX - moveX);
+
+                if(deltaX > touchSlop) {
+                    //拦截
+                    return true;
+                }
+
+                break;
+
+            }
+
+            return super.onInterceptTouchEvent(ev);
+    }
 
     /**
      *

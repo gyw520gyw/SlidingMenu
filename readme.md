@@ -25,4 +25,15 @@ xml :
 
 
 #Screenshot
+![sample](./screenshot/SlidingMenuDemo.gif)
+
+
+
+#Record
+
+###2016/10/10
+处理测量,布局,滑动的逻辑;
+
+###2016/10/11
+处理事件分发的逻辑;
 
